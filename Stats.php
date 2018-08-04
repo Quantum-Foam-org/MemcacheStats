@@ -14,9 +14,5 @@ use local\classes\cli as localCli;
 
 \common\Config::obj(__DIR__ . '/config/config.ini');
 
-// $mrs = new memcache\Stats();
-// $mrs->run('./user_agent_curl.php');
-// $mrs->menu();
-
 $rm = new localCli\StatsMenu($argv, $argc);
 $rm->readLine();
