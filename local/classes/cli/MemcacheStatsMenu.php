@@ -5,7 +5,7 @@ use cli\classes as cli;
 use cli\traits\utility as utility;
 use local\classes\memcache as memcache;
 
-class StatsMenu extends cli\Readline
+class MemcacheStatsMenu extends cli\Readline
 {
     use utility\Output;
 

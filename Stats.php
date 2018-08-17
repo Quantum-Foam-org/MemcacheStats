@@ -14,5 +14,5 @@ use local\classes\cli as localCli;
 
 \common\Config::obj(__DIR__ . '/config/config.ini');
 
-$rm = new localCli\StatsMenu($argv, $argc);
+$rm = new localCli\MemcacheStatsMenu($argv, $argc);
 $rm->readLine();
