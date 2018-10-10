@@ -99,20 +99,16 @@ class MemcacheStatsMenu extends cli\Readline
                    // uncomment this to test.
                    // $this->stats->addData();
                     
-                    $so = memcache\ServerOpt::obj();
+                    do {
+                        echo $this->text("Keys to fetch: ", 1);
+                    } while ($keys[] = readline());
                     
-                    try {
-                        do {
-                            echo $this->text("Keys to fetch: ", 1);
-                        } while ($keys[] = $so->key = readline());
-                    } catch (\UnexpectedValueException $e) {
-                        if (strlen($so->key) !== 0) {
-                            unset($keys, $so);
-                            echo $this->text('Error unable to add key', 1, 31, 47);
-                        }
-                    }
                     if (!empty($keys)) {
-                        echo $this->printArray($this->stats->getVariables($keys), $this->text('Variables', 1), 60);
+                        try {
+                            echo $this->printArray($this->stats->getVariables($keys), $this->text('Variables', 1), 60);
+                        } catch(\OutOfBoundsException | \UnexpectedValueException | \RuntimeException $oe) {
+                            $this->text('Was not able get requested variables, invalid characters in variable names!', 5, 31, 47) . "\n";
+                        }
                     }
                     $this->continue();
                     break;
@@ -126,36 +122,20 @@ class MemcacheStatsMenu extends cli\Readline
                     $this->continue();
                     break;
                 case '4':
-                    $so = memcache\ServerOpt::obj();
                     echo $this->text(sprintf("Enter Server IP (default: %s): ", \common\Config::obj()->system['defaultIP']), 1);
                     $ip = readline();
-                    if (strlen($ip) !== 0) {
-                        try {
-                            $so->ip = $ip;
-                        } catch (\UnexpectedValueException $e) {
-                            unset($so);
-                            echo $this->text('Invalid Server IP.', 5, 31, 47) . "\n";
-                            break;
-                        }
-                    } else {
-                        $so->ip = \common\Config::obj()->system['defaultIP'];
-                    }
                     
                     echo $this->text(sprintf("Enter Server Port (default: %s):", \common\Config::obj()->system['defaultPort']), 1);
                     $port = readline();
-                    if (strlen($port) !== 0) {
-                        try {
-                            $so->port = $port;
-                        } catch (\UnexpectedValueException $e) {
-                            unset($so);
-                            echo $this->text('Invalid Server Port.', 5, 31, 47) . "\n";
-                            break;
+                    try {
+                        if ($this->stats->addServer($ip, $port) === true) {
+                            $this->text('Added new server successfuly', 5, 31, 47) . "\n";
+                        } else {
+                            $this->text('Was not able to add new server!', 5, 31, 47) . "\n";
                         }
-                    } else {
-                        $so->port = \common\Config::obj()->system['defaultPort'];
+                    } catch(\UnexpectedValue $e) {
+                        $this->text($e->getMessage(), 5, 31, 47) . "\n";
                     }
-                    
-                    $this->stats->addServer($so->ip, $so->port);
                     break;
                 case 'q':
                     exit(0);
