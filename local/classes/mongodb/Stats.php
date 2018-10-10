@@ -15,8 +15,12 @@ class Stats
     }
     
     public function addServer(string $host, int $port) : bool {
-        
-        $this->mongodb =  new MongoDB\Driver\Manager("mongodb://".$host.":".$port);
+        try {
+            $so = $this->getHostPort($host, $post);
+        } catch(\UnexpectedValueException $oe) {
+            throw $oe;
+        }
+        $this->mongodb =  new MongoDB\Driver\Manager("mongodb://".$so->ip.":".$so->port);
     }
     
     public function flushCache() : bool {

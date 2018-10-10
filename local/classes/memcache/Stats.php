@@ -16,31 +16,13 @@ class Stats
     }
     
     public function addServer(?string $ip, ?int $port) : bool {
-        $so = memcache\ServerOpt::obj();
-        
-        if (strlen($ip) !== 0) {
-            try {
-                $so->ip = $ip;
-            } catch (\UnexpectedValueException $e) {
-                unset($so);
-                throw new \UnexpectedValueException('Invalid Server IP.');
-            }
-        } else {
-            $so->ip = \common\Config::obj()->system['defaultIP'];
+        try {
+            $so = $this->getHostPort($ip, $post);
+        } catch(\UnexpectedValueException $oe) {
+            throw $oe;
         }
         
-        if (strlen($port) !== 0) {
-            try {
-                $so->port = $port;
-            } catch (\UnexpectedValueException $e) {
-                unset($so);
-                throw new \UnexpectedValueException('Invalid Server Port.');
-            }
-        } else {
-            $so->port = \common\Config::obj()->system['defaultPort'];
-        }
-        
-        return $this->memcache->addServer($ip, $port);
+        return $this->memcache->addServer($so->ip, $so->port);
     }
     
     public function flushCache() : bool {
