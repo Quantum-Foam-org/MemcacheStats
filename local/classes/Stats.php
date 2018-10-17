@@ -1,27 +1,26 @@
 <?php
 namespace local\classes;
 
+use \local\classes as local;
 use \cli\traits\utility as utility;
 
-interface Stats
+abstract class Stats
 {
     use utility\Output;
     
-    public function addServer(string $host, int $port) : bool;
+    abstract public function addServer(?string $host, ?int $port) : bool;
     
-    public function flushCache() : bool;
+    abstract public function flushCache() : bool;
     
-    public function getVersion();
+    abstract public function getVersion();
     
-    public function getServerList();
+    abstract public function getServerList();
     
-    public function getStats();
+    abstract public function getStats();
     
-    public function getVariables(array $variables) : array;
+    abstract public function getVariables(array $variables) : array;
     
-    protected function getHostPort($ip, $port) : memcache\ServerOpt {
-        $so = memcache\ServerOpt::obj();
-        
+    protected function getHostPort(string $ip, int $port, local\ServerOpt $so) : void {
         if (strlen($ip) !== 0) {
             try {
                 $so->ip = $ip;
@@ -43,7 +42,5 @@ interface Stats
         } else {
             $so->port = \common\Config::obj()->system['defaultPort'];
         }
-        
-        return $so;
     }
 }

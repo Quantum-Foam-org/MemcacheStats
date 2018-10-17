@@ -1,23 +1,24 @@
 <?php
 namespace local\classes\memcache;
 
+use \local\classes as local;
 use \cli\traits\utility as utility;
 
-class Stats
+class Stats extends local\Stats
 {
     use utility\Output;
     
     protected $memcache;
     protected $programOutput = '';
     
-    public function __construct($clearCache = FALSE)
-    {
+    public function __construct($clearCache = FALSE) {
         $this->memcache = new \Memcached();
     }
     
     public function addServer(?string $ip, ?int $port) : bool {
         try {
-            $so = $this->getHostPort($ip, $post);
+            $so = memcache\ServerOpt();
+            $this->getHostPort($ip, $post, $so);
         } catch(\UnexpectedValueException $oe) {
             throw $oe;
         }

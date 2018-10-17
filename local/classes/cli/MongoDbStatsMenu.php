@@ -1,21 +1,19 @@
 <?php
 namespace local\classes\cli;
 
-use local\classes\memcache as memcache;
+use local\classes\mongodb as mongodb;
 
-class MongoDbStatsMenu extends StatsMenu
+class MemcacheStatsMenu extends StatsMenu
 {
-    use utility\Output;
-
     private $dir = __DIR__;
 
     private $stats;
 
     public function __construct($argv, $argc)
     {
-        parent::__construct($argv, $argc);
+        parent::__construct();
         
-        $this->stats = new memcache\Stats();
+        $this->stats = new mongodb\Stats();
     }
 
     protected function help(): void
@@ -128,11 +126,5 @@ class MongoDbStatsMenu extends StatsMenu
                     break;
             }
         }
-    }
-
-    private function continue(): void
-    {
-        echo $this->text("Enter to Continue.", 5, 31, 47) . "\n";
-        readline();
     }
 }
