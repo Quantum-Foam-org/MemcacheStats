@@ -1,4 +1,5 @@
 <?php
+
 $common_php_dir = '../php_common';
 $common_autoload_file = $common_php_dir . '/autoload.php';
 require ($common_autoload_file);
@@ -14,5 +15,23 @@ use local\classes\cli as localCli;
 
 \common\Config::obj(__DIR__ . '/config/config.ini');
 
-$rm = new localCli\MemcacheStatsMenu($argv, $argc);
+if ($argc >= 1) {
+    $f = new localCli\Flag();
+    try {
+        $f->exchangeArray(array_slice($argv, 1));
+    } catch (\UnexpectedValueException $e) {
+        exit(\common\logging\Logger::obj()->writeException($e));
+    }
+    if (strlen($f->dir) > 0) {
+        $this->dir = $f->dir;
+    }
+}
+
+if ($f->db === 'memcache') {
+    $rm = new localCli\MemcacheStatsMenu($f);
+} else if ($f->db === 'mongodb') {
+    $rm = new localCli\MongoDbStatsMenu($f);
+} else {
+    $rm = new localCli\StatsMenu($f);
+}
 $rm->readLine();

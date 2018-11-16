@@ -6,7 +6,9 @@ use \local\classes as local;
 class ServerOpt extends local\ServerOpt {
     protected $key;
     
-    protected $config = array(
-        'key' => array(FILTER_SANITIZE_STRING)
-    );
+    public function __construct() {
+        parent::__construct();
+        
+        $this->config['key'] = array(FILTER_SANITIZE_STRING);
+    }
 }

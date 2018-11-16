@@ -2,8 +2,9 @@
 namespace local\classes\cli;
 
 use local\classes\memcache as memcache;
+use cli\traits\utility as utility;
 
-class MongoDbStatsMenu extends StatsMenu
+class MemcacheStatsMenu extends StatsMenu
 {
     use utility\Output;
 
@@ -11,16 +12,11 @@ class MongoDbStatsMenu extends StatsMenu
 
     private $stats;
 
-    public function __construct($argv, $argc)
+    public function __construct(Flag $flags)
     {
-        parent::__construct($argv, $argc);
+        parent::__construct($flags);
         
         $this->stats = new memcache\Stats();
-    }
-
-    protected function help(): void
-    {
-        $this->text('Run program and enter a key described in the menu');
     }
 
     public function menu(): void
@@ -79,9 +75,6 @@ class MongoDbStatsMenu extends StatsMenu
                     $this->continue();
                     break;
                 case '2':
-                   // uncomment this to test.
-                   // $this->stats->addData();
-                    
                     do {
                         echo $this->text("Keys to fetch: ", 1);
                     } while ($keys[] = readline());
@@ -112,12 +105,12 @@ class MongoDbStatsMenu extends StatsMenu
                     $port = readline();
                     try {
                         if ($this->stats->addServer($ip, $port) === true) {
-                            $this->text('Added new server successfuly', 5, 31, 47) . "\n";
+                            echo $this->text('Added new server successfuly', 5, 31, 47) . "\n";
                         } else {
-                            $this->text('Was not able to add new server!', 5, 31, 47) . "\n";
+                            echo $this->text('Was not able to add new server!', 5, 31, 47) . "\n";
                         }
                     } catch(\UnexpectedValue $e) {
-                        $this->text($e->getMessage(), 5, 31, 47) . "\n";
+                        echo $this->text($e->getMessage(), 5, 31, 47) . "\n";
                     }
                     break;
                 case 'q':
@@ -130,9 +123,9 @@ class MongoDbStatsMenu extends StatsMenu
         }
     }
 
-    private function continue(): void
+   /* protected function continue(): void
     {
         echo $this->text("Enter to Continue.", 5, 31, 47) . "\n";
         readline();
-    }
+    } */
 }

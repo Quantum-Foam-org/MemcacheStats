@@ -8,7 +8,9 @@ abstract class Stats
 {
     use utility\Output;
     
-    abstract public function addServer(?string $host, ?int $port) : bool;
+    protected const DBTYPE = null;
+    
+    abstract public function addServer(?string $host, ?string $port) : bool;
     
     abstract public function flushCache() : bool;
     
@@ -20,7 +22,10 @@ abstract class Stats
     
     abstract public function getVariables(array $variables) : array;
     
-    protected function getHostPort(string $ip, int $port, local\ServerOpt $so) : void {
+    protected function getHostPort(?string $ip, ?string $port) : ServerOpt {
+        
+        $so = \call_user_func(array(__NAMESPACE__.'\\'.get_called_class()::DBTYPE.'\ServerOpt', 'obj'));
+        
         if (strlen($ip) !== 0) {
             try {
                 $so->ip = $ip;
@@ -42,5 +47,7 @@ abstract class Stats
         } else {
             $so->port = \common\Config::obj()->system['defaultPort'];
         }
+        
+        return $so;
     }
 }

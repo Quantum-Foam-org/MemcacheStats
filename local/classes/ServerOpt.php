@@ -3,7 +3,7 @@ namespace local\classes;
 
 use \common\obj as obj;
 
-class ServerOpt extends obj\Config {
+abstract class ServerOpt extends obj\Config {
     protected $ip;
     protected $port;
     

@@ -4,7 +4,7 @@ namespace local\classes\cli;
 use cli\classes as cli;
 use cli\traits\utility as utility;
 
-class MongoDbStatsMenu extends cli\Readline
+class StatsMenu extends cli\Readline
 {
     use utility\Output;
 
@@ -12,23 +12,11 @@ class MongoDbStatsMenu extends cli\Readline
 
     private $stats;
 
-    public function __construct($argv, $argc)
+    public function __construct(Flag $flag)
     {
-        if ($argc >= 1) {
-            $f = new Flag();
-            try {
-                $f->exchangeArray(array_slice($argv, 1));
-            } catch (\UnexpectedValueException $e) {
-                exit(\common\logging\Logger::obj()->writeException($e));
-            }
-            if ($f->help === TRUE) {
-                exit($this->help());
-            }
-            if (strlen($f->dir) > 0) {
-                $this->dir = $f->dir;
-            }
+        if ($flag->help === TRUE) {
+            exit($this->help());
         }
-        
         $this->prompt = "Selection: ";
     }
 
@@ -37,3 +25,10 @@ class MongoDbStatsMenu extends cli\Readline
         echo $this->text("Enter to Continue.", 5, 31, 47) . "\n";
         readline();
     }
+    
+    
+    protected function help(): void
+    {
+        echo $this->text('Run program and enter a key described in the menu') . "\n";
+    }
+}

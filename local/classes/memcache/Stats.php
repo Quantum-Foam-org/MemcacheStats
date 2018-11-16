@@ -7,6 +7,8 @@ use \cli\traits\utility as utility;
 class Stats extends local\Stats
 {
     use utility\Output;
+   
+    protected const DBTYPE = 'memcache';
     
     protected $memcache;
     protected $programOutput = '';
@@ -15,10 +17,9 @@ class Stats extends local\Stats
         $this->memcache = new \Memcached();
     }
     
-    public function addServer(?string $ip, ?int $port) : bool {
+    public function addServer(?string $ip, ?string $port) : bool {
         try {
-            $so = memcache\ServerOpt();
-            $this->getHostPort($ip, $post, $so);
+            $so = $this->getHostPort($ip, $port);
         } catch(\UnexpectedValueException $oe) {
             throw $oe;
         }
@@ -30,15 +31,15 @@ class Stats extends local\Stats
         return $this->memcache->flush();
     }
     
-    public function getVersion() {
+    public function getVersion() : array {
         return $this->memcache->getVersion();
     }
     
-    public function getServerList() {
+    public function getServerList() : array {
         return $this->memcache->getServerList();
     }
     
-    public function getStats()
+    public function getStats() : array
     {
         return $this->memcache->getStats();
     }
