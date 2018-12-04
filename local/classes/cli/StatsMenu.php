@@ -4,7 +4,7 @@ namespace local\classes\cli;
 use cli\classes as cli;
 use cli\traits\utility as utility;
 
-class StatsMenu extends cli\Readline
+abstract class StatsMenu extends cli\Readline
 {
     use utility\Output;
 

@@ -3,22 +3,17 @@ namespace local\classes\cli;
 
 use local\classes\mongodb as mongodb;
 
-class MemcacheStatsMenu extends StatsMenu
+class MongoDbStatsMenu extends StatsMenu
 {
     private $dir = __DIR__;
 
     private $stats;
 
-    public function __construct($argv, $argc)
+    public function __construct(Flag $flags)
     {
-        parent::__construct();
+        parent::__construct($flags);
         
         $this->stats = new mongodb\Stats();
-    }
-
-    protected function help(): void
-    {
-        $this->text('Run program and enter a key described in the menu');
     }
 
     public function menu(): void
@@ -106,7 +101,7 @@ class MemcacheStatsMenu extends StatsMenu
                     echo $this->text(sprintf("Enter Server IP (default: %s): ", \common\Config::obj()->system['defaultIP']), 1);
                     $ip = readline();
                     
-                    echo $this->text(sprintf("Enter Server Port (default: %s):", \common\Config::obj()->system['defaultPort']), 1);
+                    echo $this->text(sprintf("Enter Server Port (default: %s): ", \common\Config::obj()->system['defaultPort']), 1);
                     $port = readline();
                     try {
                         if ($this->stats->addServer($ip, $port) === true) {
@@ -114,8 +109,8 @@ class MemcacheStatsMenu extends StatsMenu
                         } else {
                             $this->text('Was not able to add new server!', 5, 31, 47) . "\n";
                         }
-                    } catch(\UnexpectedValue $e) {
-                        $this->text($e->getMessage(), 5, 31, 47) . "\n";
+                    } catch(\UnexpectedValueException $e) {
+                        echo $this->text($e->getMessage(), 5, 31, 47) . "\n";
                     }
                     break;
                 case 'q':

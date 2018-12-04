@@ -32,6 +32,6 @@ if ($f->db === 'memcache') {
 } else if ($f->db === 'mongodb') {
     $rm = new localCli\MongoDbStatsMenu($f);
 } else {
-    $rm = new localCli\StatsMenu($f);
+    $rm = new localCli\MemcacheStatsMenu($f);
 }
 $rm->readLine();
