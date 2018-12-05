@@ -32,6 +32,9 @@ if ($f->db === 'memcache') {
 } else if ($f->db === 'mongodb') {
     $rm = new localCli\MongoDbStatsMenu($f);
 } else {
-    $rm = new localCli\MemcacheStatsMenu($f);
+    exit(\common\logging\Logger::obj()->write("Error in Database Selection with --db flag must be memcache | mongodb\n", -1, TRUE));
 }
+
 $rm->readLine();
+
+exit(0);
