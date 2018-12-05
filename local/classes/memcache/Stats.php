@@ -8,7 +8,7 @@ class Stats extends local\Stats
 {
     use utility\Output;
    
-    protected const DBTYPE = 'memcache';
+    public const DBTYPE = 'memcache';
     
     protected $memcache;
     protected $programOutput = '';

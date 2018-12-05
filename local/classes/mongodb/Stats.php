@@ -8,7 +8,7 @@ class Stats extends local\Stats
 {
     use utility\Output;
     
-    protected const DBTYPE = 'mongodb';
+    public const DBTYPE = 'mongodb';
     
     protected $mongodb;
     

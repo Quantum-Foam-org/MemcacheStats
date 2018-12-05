@@ -98,10 +98,10 @@ class MemcacheStatsMenu extends StatsMenu
                     $this->continue();
                     break;
                 case '4':
-                    echo $this->text(sprintf("Enter Server IP (default: %s): ", \common\Config::obj()->system['defaultIP']), 1);
+                    echo $this->text(sprintf("Enter Server IP (default: %s): ", \common\Config::obj()->system['defaultIP'][$this->stats::DBTYPE]), 1);
                     $ip = readline();
                     
-                    echo $this->text(sprintf("Enter Server Port (default: %s): ", \common\Config::obj()->system['defaultPort']), 1);
+                    echo $this->text(sprintf("Enter Server Port (default: %s): ", \common\Config::obj()->system['defaultPort'][$this->stats::DBTYPE]), 1);
                     $port = readline();
                     try {
                         if ($this->stats->addServer($ip, $port) === true) {

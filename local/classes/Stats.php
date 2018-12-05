@@ -8,7 +8,7 @@ abstract class Stats
 {
     use utility\Output;
     
-    protected const DBTYPE = null;
+    public const DBTYPE = null;
     
     abstract public function addServer(?string $host, ?string $port) : bool;
     
@@ -23,9 +23,8 @@ abstract class Stats
     abstract public function getVariables(array $variables) : array;
     
     protected function getHostPort(?string $ip, ?string $port) : ServerOpt {
-        
-        $so = \call_user_func(array(__NAMESPACE__.'\\'.get_called_class()::DBTYPE.'\ServerOpt', 'obj'));
-        
+        $dbtype = get_called_class()::DBTYPE;
+        $so = \call_user_func(array(__NAMESPACE__.'\\'.$dbtype.'\ServerOpt', 'obj'));
         if (strlen($ip) !== 0) {
             try {
                 $so->ip = $ip;
@@ -34,7 +33,7 @@ abstract class Stats
                 throw new \UnexpectedValueException('Invalid Server IP.');
             }
         } else {
-            $so->ip = \common\Config::obj()->system['defaultIP'];
+            $so->ip = \common\Config::obj()->system['defaultIP'][$dbtype];
         }
         
         if (strlen($port) !== 0) {
@@ -45,7 +44,7 @@ abstract class Stats
                 throw new \UnexpectedValueException('Invalid Server Port.');
             }
         } else {
-            $so->port = \common\Config::obj()->system['defaultPort'];
+            $so->port = \common\Config::obj()->system['defaultPort'][$dbtype];
         }
         
         return $so;
