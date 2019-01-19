@@ -53,7 +53,7 @@ class Stats extends local\Stats
     }
     
     public function getVariables(array $variables) : array {
-        $so = memcache\ServerOpt::obj();
+        $so = ServerOpt::obj();
         try {
             $so->exchangeArray(['keys' => $variables]);
         } catch(\UnexpectedValueException $e) {

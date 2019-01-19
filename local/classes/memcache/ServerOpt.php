@@ -4,11 +4,11 @@ namespace local\classes\memcache;
 use \local\classes as local;
 
 class ServerOpt extends local\ServerOpt {
-    protected $key;
+    protected $keys;
     
     public function __construct() {
         parent::__construct();
         
-        $this->config['key'] = array(FILTER_SANITIZE_STRING);
+        $this->config['keys'] = array(FILTER_SANITIZE_STRING);
     }
 }
