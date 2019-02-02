@@ -31,8 +31,10 @@ if ($f->db === 'memcache') {
     $rm = new localCli\MemcacheStatsMenu($f);
 } else if ($f->db === 'mongodb') {
     $rm = new localCli\MongoDbStatsMenu($f);
+} else if ($f->db === 'redis') {
+    $rm = new localCli\RedisStatsMenu($f);
 } else {
-    exit(\common\logging\Logger::obj()->write("Error in Database Selection with --db flag must be memcache | mongodb\n", -1, TRUE));
+    exit(\common\logging\Logger::obj()->write("Error in Database Selection with --db flag must be memcache | mongodb | redis\n", -1, TRUE));
 }
 
 $rm->readLine();

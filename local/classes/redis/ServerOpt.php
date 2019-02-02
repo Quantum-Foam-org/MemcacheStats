@@ -1,5 +1,5 @@
 <?php
-namespace local\classes\mongodb;
+namespace local\classes\redis;
 
 use \local\classes as local;
 
