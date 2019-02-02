@@ -19,6 +19,42 @@ abstract class StatsMenu extends cli\Readline
         }
         $this->prompt = "Selection: ";
     }
+    
+    
+
+    public function menu(): void
+    {
+        $output = array(
+            1 => array(
+                'Press',
+                '`1`',
+                "for Statistics"
+            ),
+            2 => array(
+                'Press',
+                '`2`',
+                "for Variables"
+            ),
+            3 => array(
+                'Press',
+                '`3`',
+                "to Flush the Cache"
+            ),
+            4 => array(
+                'Press',
+                '`4`',
+                "to add a Server"
+            ),
+            5 => array(
+                'Press',
+                '`q`',
+                "to quit"
+            )
+        );
+        foreach ($output as $i => $t) {
+            echo $this->text($i . '.) ', 1) . $this->text($t[0] . ' ', 1) . $this->text($t[1] . ' ', 0, 31, 0) . $this->text($t[2]) . "\n";
+        }
+    }
 
     protected function continue(): void
     {
