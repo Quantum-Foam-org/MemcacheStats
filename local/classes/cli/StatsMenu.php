@@ -52,7 +52,7 @@ abstract class StatsMenu extends cli\Readline
             )
         );
         foreach ($output as $i => $t) {
-            echo $this->text($i . '.) ', 1) . $this->text($t[0] . ' ', 1) . $this->text($t[1] . ' ', 0, 31, 0) . $this->text($t[2]) . "\n";
+            echo $this->text($i . '.) ', 1) . $this->text($t[0] . ' ', 1) . $this->text($t[1] . ' ', 0, 31) . $this->text($t[2]) . "\n";
         }
     }
 
