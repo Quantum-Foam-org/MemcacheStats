@@ -45,7 +45,7 @@ class MemcacheStatsMenu extends StatsMenu
                         echo $this->text("Keys to fetch: ", 1);
                     } while ($keys[] = readline());
                     
-                    unset($keys[array_key_last($keys)]);
+                    array_pop($keys);
                     
                     if (!empty($keys)) {
                         try {
