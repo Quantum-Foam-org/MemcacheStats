@@ -63,7 +63,7 @@ class Stats extends local\Stats
         
         $this->memcache->getDelayed($so->keys, true);
         
-        $so->keys = [];
+        unset($so->keys);
         
         $result = $this->memcache->fetchAll();
         if ($result === FALSE) {
