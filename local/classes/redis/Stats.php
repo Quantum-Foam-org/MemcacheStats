@@ -60,7 +60,7 @@ class Stats extends local\Stats
     public function getVariables(array $variables) : array {
         $so = ServerOpt::obj();
         try {
-            $so->exchangeArray(['keys' => $variables]);
+            $so->keys = $variables;
         } catch(\UnexpectedValueException $e) {
             unset($so);
             throw new \UnexpectedValueException('Error unable to add keys');
@@ -70,6 +70,8 @@ class Stats extends local\Stats
         foreach ($so->keys as $key) {
             $result[] = $this->redis->get($key);
         }
+        
+        unset($so->keys);
         
         return $result;
     }
