@@ -55,12 +55,16 @@ class Stats extends local\Stats
     public function getVariables(array $variables) : array {
         $so = ServerOpt::obj();
         try {
-            $so->exchangeArray(['keys' => $variables]);
+            $so->keys = $variables;
         } catch(\UnexpectedValueException $e) {
             unset($so);
             throw new \UnexpectedValueException('Error unable to add keys');
         }
-        $this->memcache->getDelayed($variables, true);
+        
+        $this->memcache->getDelayed($so->keys, true);
+        
+        $so->keys = [];
+        
         $result = $this->memcache->fetchAll();
         if ($result === FALSE) {
             $result = array($this->memcache->getResultMessage());

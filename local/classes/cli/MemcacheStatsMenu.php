@@ -45,6 +45,8 @@ class MemcacheStatsMenu extends StatsMenu
                         echo $this->text("Keys to fetch: ", 1);
                     } while ($keys[] = readline());
                     
+                    array_pop($keys);
+                    
                     if (!empty($keys)) {
                         try {
                             echo $this->printArray($this->stats->getVariables($keys), $this->text('Variables', 1), 60);
