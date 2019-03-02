@@ -38,7 +38,7 @@ class Stats extends local\Stats
         try {
             $so->db = $db;
         } catch(\UnexpectedValueException $e) {
-            unset($so);
+            unset($so->db);
             throw new \UnexpectedValueException('Error unable to add database');
         }
         
@@ -50,7 +50,8 @@ class Stats extends local\Stats
         try {
             $so->collection = $collection;
         } catch(\UnexpectedValueException $e) {
-            unset($so);
+            unset($so->collection);
+            
             throw new \UnexpectedValueException('Error unable to add collection');
         }
         
@@ -98,7 +99,15 @@ class Stats extends local\Stats
     
     public function getVariables(array $variables) : array {
         $so = ServerOpt::obj();
+        try {
+            $so->keys = $variables;
+        } catch(\UnexpectedValueException $e) {
+            unset($so->keys);
+            
+            throw new \UnexpectedValueException('Error unable to add keys');
+        }
         
-        return $this->mongodb->executeQuery($so->db.'.'.$so->collection, new MongoDB\Driver\Query([], ['projection' => [$variables => 1]]));
+        return $this->mongodb->executeQuery($so->db.'.'.$so->collection, 
+                new MongoDB\Driver\Query([], ['projection' => [array_fill_keys($so->keys, 1)]]));
     }
 }

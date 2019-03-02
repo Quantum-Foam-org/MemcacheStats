@@ -41,6 +41,8 @@ class MongoDbStatsMenu extends StatsMenu
                    // uncomment this to test.
                    // $this->stats->addData();
                     
+                    $this->getDBCollection();
+                    
                     do {
                         echo $this->text("Keys to fetch: ", 1);
                     } while ($keys[] = readline());
@@ -55,6 +57,8 @@ class MongoDbStatsMenu extends StatsMenu
                     $this->continue();
                     break;
                 case '3':
+                    $this->getDBCollection();
+                    
                     if ($this->stats->flushCache()) {
                         echo $this->text('Cache Flushed', 1, 31, 47);
                     } else {
@@ -86,6 +90,18 @@ class MongoDbStatsMenu extends StatsMenu
                     echo "\n\nCommand not found\n\n";
                     break;
             }
+        }
+    }
+    
+    public function getDBCollection() : void {
+        $so = ServerOpt::obj();
+        
+        echo $this->text("Enter Database Name: ", 1);
+        $db = readline();
+        if ($this->stats->addDb($db)) {
+            echo $this->text("Enter Collection Name: ", 1);
+            $collection = readline();
+            $this->stats->addCollection($collection);
         }
     }
 }
